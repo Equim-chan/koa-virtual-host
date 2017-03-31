@@ -1,5 +1,6 @@
 # koa-virtual-host
-<!-- badges -->
+[![npm version](https://badge.fury.io/js/koa-virtual-host.svg)](https://badge.fury.io/js/koa-virtual-host)
+
 A hostname-based virtual host middleware for Koa2.
 
 ## Installation
