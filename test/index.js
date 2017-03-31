@@ -4,9 +4,7 @@ const Koa = require('koa');
 const vhost = require('..');
 const request = require('supertest');
 const chai = require('chai');
-const chaiAsPromised = require("chai-as-promised");
 
-chai.use(chaiAsPromised);
 chai.should();
 
 describe('vhost(pattern, app)', () => {

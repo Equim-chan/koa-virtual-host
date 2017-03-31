@@ -68,7 +68,7 @@ Notes that passing `Object` will not support RegExp patterns. To support RegExp,
 Example:
 ``` javascript
 // ...
-// Suppose you have created or imported "blog" and "forum".
+// Suppose you have created or imported Koa apps "blog", "forum" and "equim".
 
 const host = new Koa();
 
@@ -92,6 +92,8 @@ host.use(vhost([{
     pattern: /^eq.+\.example\.com/,
     target: equim
 }]));
+
+// ...
 ```
 
 ## Test
