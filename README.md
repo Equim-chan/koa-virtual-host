@@ -1,5 +1,5 @@
 # koa-virtual-host
-[![npm version](https://badge.fury.io/js/koa-virtual-host.svg)](https://badge.fury.io/js/koa-virtual-host)
+[![npm version](https://badge.fury.io/js/koa-virtual-host.svg)](https://badge.fury.io/js/koa-virtual-host)[![Build Status](https://travis-ci.org/Equim-chan/koa-virtual-host.svg?branch=master)](https://travis-ci.org/Equim-chan/koa-virtual-host)
 
 A hostname-based virtual host middleware for Koa2.
 
