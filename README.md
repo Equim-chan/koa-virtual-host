@@ -1,5 +1,8 @@
 # koa-virtual-host
-[![npm version](https://badge.fury.io/js/koa-virtual-host.svg)](https://badge.fury.io/js/koa-virtual-host)[![Build Status](https://travis-ci.org/Equim-chan/koa-virtual-host.svg?branch=master)](https://travis-ci.org/Equim-chan/koa-virtual-host)
+[![npm version](https://img.shields.io/npm/v/koa-virtual-host.svg)](https://www.npmjs.com/package/koa-virtual-host)
+[![Build Status](https://travis-ci.org/Equim-chan/koa-virtual-host.svg?branch=master)](https://travis-ci.org/Equim-chan/koa-virtual-host)
+[![Coverage Status](https://coveralls.io/repos/github/Equim-chan/koa-virtual-host/badge.svg?branch=master)](https://coveralls.io/github/Equim-chan/koa-virtual-host?branch=master)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/9f4a3b6990134a7b9c5fe099dfb41bcd)](https://www.codacy.com/app/Equim-chan/koa-virtual-host?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Equim-chan/koa-virtual-host&amp;utm_campaign=Badge_Grade)
 
 A hostname-based virtual host middleware for Koa2.
 
