@@ -49,34 +49,10 @@ function vhost(pattern, app) {
 
             await compose(target.middleware)(ctx, next);
         } catch (err) {
-            console.error(err.stack);
-            await next();
+            // the app is specified but malformed
+            ctx.throw(500, err.message);
         }
     };
-
-    /**
-     * Check if `hostname` matches the
-     * specified `condition`.
-     *
-     * The `condition` should be either a
-     * String or a RegExp here.
-     *
-     * @param  {String | RegExp} condition
-     * @param  {String} hostname
-     * @return {Boolean}
-     * @api private
-     */
-    function isMatch(condition, hostname) {
-        if (typeof condition === 'string') {
-            return condition === hostname;
-        }
-
-        if (condition instanceof RegExp) {
-            return condition.test(hostname);
-        }
-
-        return false;
-    }
 
     /**
      * Returns the matched Koa app from
@@ -109,5 +85,29 @@ function vhost(pattern, app) {
         }
 
         return undefined;
+    }
+
+    /**
+     * Check if `hostname` matches the
+     * specified `condition`.
+     *
+     * The `condition` should be either a
+     * String or a RegExp here.
+     *
+     * @param  {String | RegExp} condition
+     * @param  {String} hostname
+     * @return {Boolean}
+     * @api private
+     */
+    function isMatch(condition, hostname) {
+        if (typeof condition === 'string') {
+            return condition === hostname;
+        }
+
+        if (condition instanceof RegExp) {
+            return condition.test(hostname);
+        }
+
+        return false;
     }
 }

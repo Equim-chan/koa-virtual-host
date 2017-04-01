@@ -1,15 +1,49 @@
 # koa-virtual-host
-[![npm version](https://img.shields.io/npm/v/koa-virtual-host.svg)](https://www.npmjs.com/package/koa-virtual-host)
-[![Build Status](https://travis-ci.org/Equim-chan/koa-virtual-host.svg?branch=master)](https://travis-ci.org/Equim-chan/koa-virtual-host)
-[![Coverage Status](https://coveralls.io/repos/github/Equim-chan/koa-virtual-host/badge.svg?branch=master)](https://coveralls.io/github/Equim-chan/koa-virtual-host?branch=master)
-[![Code Climate](https://codeclimate.com/github/Equim-chan/koa-virtual-host/badges/gpa.svg)](https://codeclimate.com/github/Equim-chan/koa-virtual-host)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/9f4a3b6990134a7b9c5fe099dfb41bcd)](https://www.codacy.com/app/Equim-chan/koa-virtual-host?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Equim-chan/koa-virtual-host&amp;utm_campaign=Badge_Grade)
+[![npm version](https://img.shields.io/npm/v/koa-virtual-host.svg?style=flat)](https://www.npmjs.com/package/koa-virtual-host)
+[![Build Status](https://img.shields.io/travis/Equim-chan/koa-virtual-host.svg?style=flat)](https://travis-ci.org/Equim-chan/koa-virtual-host)
+[![Coverage Status](https://img.shields.io/coveralls/Equim-chan/koa-virtual-host.svg?style=flat)](https://coveralls.io/github/Equim-chan/koa-virtual-host?branch=master)
+[![VersionEye](https://img.shields.io/versioneye/d/user/projects/58deaba3d6c98d004405475e.svg)](https://www.versioneye.com/user/projects/58deaba3d6c98d004405475e)
+[![Code Climate](https://img.shields.io/codeclimate/github/Equim-chan/koa-virtual-host/badges/gpa.svg?style=flat)](https://codeclimate.com/github/Equim-chan/koa-virtual-host)
+[![Codacy Badge](https://img.shields.io/codacy/grade/9f4a3b6990134a7b9c5fe099dfb41bcd.svg?style=flat)](https://www.codacy.com/app/Equim-chan/koa-virtual-host)
+[![license](https://img.shields.io/npm/l/koa-virtual-host.svg?style=flat)](https://github.com/Equim-chan/koa-virtual-host/blob/master/LICENSE)
 
-A hostname-based virtual host middleware for Koa2.
+A name-based virtual host middleware for Koa2.
 
 ## Installation
 ``` shell
 $ npm i --save koa-virtual-host
+```
+
+## Example
+``` javascript
+const Koa = require('koa');
+const vhost = require('koa-virtual-host');
+
+// Import the sub Koa apps.
+const apex = require('./apps/apex');
+const blog = require('./apps/blog');
+const forum = require('./apps/forum');
+const resume = require('./apps/resume');
+
+// Set up a host.
+const host = new Koa();
+
+// Configure the vhosts.
+host.use('blog.example.com', blog);                        // support string patterns
+host.use(/^(?:eq.*|resume)\.example\.com$/i, resume);      // support regexp patterns
+host.use({                                                 // support pattern-app mappings as object
+    'forum.example.com': forum,  //<--------------.
+    'www.example.org': apex      //               |
+});                              //               |
+host.use([{                      //               |        // support pattern-app mappings as array
+    pattern: /^b(?:bs|oard)\.example\..+$/i,  //  |
+    target: forum  //<----------------------------.        // support many-to-one mappings
+}, {
+    pattern: 'example.com',
+    target: apex
+}]);
+
+host.listen(80);
 ```
 
 ## API
@@ -23,8 +57,7 @@ Example:
 const Koa = require('koa');
 const vhost = require('koa-virtual-host');
 
-// Two individual Koa2 apps.
-// You can also import them from existing modules that exported ones.
+// You can also import them from existing modules that export ones.
 const a = new Koa();
 const b = new Koa();
 
@@ -38,11 +71,8 @@ b.use(async (ctx, next) => {
     await next();
 });
 
-// Create a host
 const host = new Koa();
 
-// Set the virtual hosts.
-// The pattern can be either a string or a regexp here.
 // The requests that match the pattern will be forwarded to the corresponding app.
 host.use(vhost(/localhost/i, a));
 host.use(vhost('127.0.0.1', b));
@@ -61,39 +91,56 @@ World
 
 ### vhost(patterns)
 
-* pattern (`Object` | `Array`) - the patterns-apps map
+* patterns (`Object` | `Array`) - the pattern-app map
 
-Notes that passing `Object` will not support RegExp patterns. To support RegExp, you need to pass an `Array`.
+Notes that if you pass an `Object` to `patterns`, RegExp patterns will not be supported. To enable RegExp support, you need to pass an `Array`.
 
 Example:
 ``` javascript
-// ...
-// Suppose you have created or imported Koa apps "blog", "forum" and "equim".
+const Koa = require('koa');
+const vhost = require('koa-virtual-host');
+
+const a = new Koa();
+const b = new Koa();
+const c = new Koa();
+const d = new Koa();
+
+a.use(async (ctx, next) => {
+    ctx.body = 'Hello';
+    await next();
+});
+
+b.use(async (ctx, next) => {
+    ctx.body = 'World';
+    await next();
+});
+
+c.use(async (ctx, next) => {
+    ctx.body = 'to';
+    await next();
+});
+
+d.use(async (ctx, next) => {
+    ctx.body = 'Koa';
+    await next();
+});
 
 const host = new Koa();
 
 host.use(vhost({
-    'blog.example.com': blog,
-    'forum.example.com': forum,
-    'board.example.com': forum       // many-to-one mappings are acceptable
+    'a.example.com': a,
+    'b.example.com': b
 }));
 
-/**
- * Alternatively
- */
-
 host.use(vhost([{
-    pattern: 'blog.example.com',
-    target: blog
+    pattern: 'c.example.com',
+    target: c
 }, {
-    pattern: 'forum.example.com',
-    target: forum
-}, {
-    pattern: /^eq.+\.example\.com/,
-    target: equim
+    pattern: /^d.*\.example\.com/,
+    target: d
 }]));
 
-// ...
+host.listen(8000);
 ```
 
 ## Test

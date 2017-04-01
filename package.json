@@ -1,7 +1,7 @@
 {
   "name": "koa-virtual-host",
-  "version": "0.1.1",
-  "description": "A hostname-based virtual host middleware for Koa2.",
+  "version": "0.1.2",
+  "description": "A name-based virtual host engine for Koa2.",
   "author": "Equim",
   "keywords": [
     "koa",
@@ -17,8 +17,8 @@
     "url": "https://github.com/Equim-chan/koa-virtual-host.git"
   },
   "scripts": {
-    "test": "mocha",
-    "test-cov": "istanbul cover ./node_modules/mocha/bin/_mocha",
+    "test": "mocha -b",
+    "test-cov": "istanbul cover ./node_modules/mocha/bin/_mocha -- -b",
     "test-travis": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly"
   },
   "license": "MIT",
