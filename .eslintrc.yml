@@ -1,0 +1,11 @@
+extends: google
+parserOptions:
+  ecmaVersion: 8
+rules:
+  indent:
+    - error
+    - 2
+  max-len: warn
+  newline-per-chained-call: warn
+  eqeqeq: error
+  no-invalid-this: off

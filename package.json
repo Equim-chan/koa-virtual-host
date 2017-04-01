@@ -1,6 +1,6 @@
 {
   "name": "koa-virtual-host",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "A name-based virtual host engine for Koa2.",
   "author": "Equim",
   "keywords": [
@@ -17,13 +17,16 @@
     "url": "https://github.com/Equim-chan/koa-virtual-host.git"
   },
   "scripts": {
+    "lint": "eslint --fix .",
     "test": "mocha -b",
     "test-cov": "istanbul cover ./node_modules/mocha/bin/_mocha -- -b",
-    "test-travis": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly"
+    "test-travis": "istanbul cover ./node_modules/mocha/bin/_mocha -R lcovonly"
   },
   "license": "MIT",
   "devDependencies": {
     "chai": "^3.5.0",
+    "eslint": "^3.19.0",
+    "eslint-config-google": "^0.7.1",
     "istanbul": "^1.1.0-alpha.1",
     "koa": "^2.2.0",
     "mocha": "^3.2.0",

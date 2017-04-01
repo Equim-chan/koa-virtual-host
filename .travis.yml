@@ -4,5 +4,6 @@ node_js:
 install:
   - npm i
 script:
+  - npm run lint
   - npm run test-travis
 after_script: npm install coveralls && cat ./coverage/lcov.info | coveralls

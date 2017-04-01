@@ -35,80 +35,80 @@ module.exports = vhost;
  * @api public
  */
 function vhost(pattern, app) {
-    return async (ctx, next) => {
-        try {
-            let target = app;
+  return async (ctx, next) => {
+    try {
+      let target = app;
 
-            if (!target) {
-                target = matchAndMap(ctx.hostname);
-                if (!target) {
-                    return await next();
-                }
-            } else if (!isMatch(pattern, ctx.hostname)) {
-                return await next();
-            }
-
-            await compose(target.middleware)(ctx, next);
-        } catch (err) {
-            // the app is specified but malformed
-            ctx.throw(500, err.message);
+      if (!target) {
+        target = matchAndMap(ctx.hostname);
+        if (!target) {
+          return await next();
         }
-    };
+      } else if (!isMatch(pattern, ctx.hostname)) {
+        return await next();
+      }
 
-    /**
-     * Returns the matched Koa app from
-     * the specified `pattern` map
-     * according to the `hostname`.
-     *
-     * Returns undefined if not found.
-     *
-     * The `pattern` should be either an
-     * Array or Object here.
-     *
-     * Check README.md for more info.
-     *
-     * @param  {String} hostname
-     * @return {Application | undefined}
-     * @api private
-     */
-    function matchAndMap(hostname) {
-        if (pattern instanceof Array) {
-            for (let i = 0; i < pattern.length; i++) {
-                if (isMatch(pattern[i].pattern, hostname)) {
-                    return pattern[i].target;
-                }
-            }
-            return undefined;
+      await compose(target.middleware)(ctx, next);
+    } catch (err) {
+      // the app is specified but malformed
+      ctx.throw(500, err.message);
+    }
+  };
+
+  /**
+   * Returns the matched Koa app from
+   * the specified `pattern` map
+   * according to the `hostname`.
+   *
+   * Returns undefined if not found.
+   *
+   * The `pattern` should be either an
+   * Array or Object here.
+   *
+   * Check README.md for more info.
+   *
+   * @param  {String} hostname
+   * @return {Application | undefined}
+   * @api private
+   */
+  function matchAndMap(hostname) {
+    if (pattern instanceof Array) {
+      for (let i = 0; i < pattern.length; i++) {
+        if (isMatch(pattern[i].pattern, hostname)) {
+          return pattern[i].target;
         }
-
-        if (pattern instanceof Object) {
-            return pattern[hostname];
-        }
-
-        return undefined;
+      }
+      return undefined;
     }
 
-    /**
-     * Check if `hostname` matches the
-     * specified `condition`.
-     *
-     * The `condition` should be either a
-     * String or a RegExp here.
-     *
-     * @param  {String | RegExp} condition
-     * @param  {String} hostname
-     * @return {Boolean}
-     * @api private
-     */
-    function isMatch(condition, hostname) {
-        if (typeof condition === 'string') {
-            return condition === hostname;
-        }
-
-        if (condition instanceof RegExp) {
-            return condition.test(hostname);
-        }
-
-        return false;
+    if (pattern instanceof Object) {
+      return pattern[hostname];
     }
+
+    return undefined;
+  }
+
+  /**
+   * Check if `hostname` matches the
+   * specified `condition`.
+   *
+   * The `condition` should be either a
+   * String or a RegExp here.
+   *
+   * @param  {String | RegExp} condition
+   * @param  {String} hostname
+   * @return {Boolean}
+   * @api private
+   */
+  function isMatch(condition, hostname) {
+    if (typeof condition === 'string') {
+      return condition === hostname;
+    }
+
+    if (condition instanceof RegExp) {
+      return condition.test(hostname);
+    }
+
+    return false;
+  }
 }
