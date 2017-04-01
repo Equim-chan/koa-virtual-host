@@ -20,7 +20,7 @@
     "lint": "eslint --fix .",
     "test": "mocha -b",
     "test-cov": "istanbul cover ./node_modules/mocha/bin/_mocha -- -b",
-    "test-travis": "istanbul cover ./node_modules/mocha/bin/_mocha -R lcovonly"
+    "test-travis": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly"
   },
   "license": "MIT",
   "devDependencies": {
