@@ -33,15 +33,15 @@ const host = new Koa();
 host.use(vhost('blog.example.com', blog));                        // support string patterns
 host.use(vhost(/^(?:pro.*|resume)\.example\.com$/i, resume));     // support regexp patterns
 host.use(vhost({                                                  // support pattern-app mappings as object
-    'example.org': apex,
-    'forum.example.com': forum
+  'example.org': apex,
+   'forum.example.com': forum
 }));
 host.use(vhost([{                                                 // support pattern-app mappings as array
-    pattern: /^b(?:bs|oard)\.example\..+$/i,
-    target: forum                                                 // support many-to-one mappings
+  pattern: /^b(?:bs|oard)\.example\..+$/i,
+  target: forum                                                   // support many-to-one mappings
 }, {
-    pattern: 'api.example.com',
-    target: api
+  pattern: 'api.example.com',
+  target: api
 }]));
 
 // Listen and enjoy
@@ -64,13 +64,13 @@ const a = new Koa();
 const b = new Koa();
 
 a.use(async (ctx, next) => {
-    ctx.body = 'Hello';
-    await next();
+  ctx.body = 'Hello';
+  await next();
 });
 
 b.use(async (ctx, next) => {
-    ctx.body = 'World';
-    await next();
+  ctx.body = 'World';
+  await next();
 });
 
 const host = new Koa();
@@ -108,41 +108,41 @@ const c = new Koa();
 const d = new Koa();
 
 a.use(async (ctx, next) => {
-    await next();
-    ctx.body += ' World';
+  await next();
+  ctx.body += ' World';
 });
 
 b.use(async (ctx, next) => {
-    ctx.body = 'Hello';
-    await next();
+  ctx.body = 'Hello';
+  await next();
 });
 
 c.use(async (ctx, next) => {
-    await next();
-    ctx.set('X-Powered-By', 'Koa');
+  await next();
+  ctx.set('X-Powered-By', 'Koa');
 });
 
 d.use(async (ctx, next) => {
-    ctx.body = 'foobar';
-    await next();
-    ctx.set('X-Powered-By', 'vhost');
+  ctx.body = 'foobar';
+  await next();
+  ctx.set('X-Powered-By', 'vhost');
 });
 
 const host = new Koa();
 
 host.use(vhost({
-    'localhost': a,
-    '127.0.0.1': c
+  'localhost': a,
+  '127.0.0.1': c
 }));
 
 // Additionally, if the pattern is duplicated,
 // the corresponding apps will be called in order
 host.use(vhost([{
-    pattern: 'localhost',
-    target: b
+  pattern: 'localhost',
+  target: b
 }, {
-    pattern: /^127\.0\.0\.\d+$/,
-    target: d
+  pattern: /^127\.0\.0\.\d+$/,
+  target: d
 }]));
 
 host.listen(8000);
