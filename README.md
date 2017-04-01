@@ -30,14 +30,14 @@ const host = new Koa();
 
 // Configure the vhosts.
 host.use('blog.example.com', blog);                        // support string patterns
-host.use(/^(?:eq.*|resume)\.example\.com$/i, resume);      // support regexp patterns
+host.use(/^(?:pro.*|resume)\.example\.com$/i, resume);      // support regexp patterns
 host.use({                                                 // support pattern-app mappings as object
-    'forum.example.com': forum,  //<--------------.
-    'www.example.org': apex      //               |
-});                              //               |
-host.use([{                      //               |        // support pattern-app mappings as array
-    pattern: /^b(?:bs|oard)\.example\..+$/i,  //  |
-    target: forum  //<----------------------------.        // support many-to-one mappings
+    'forum.example.com': forum,
+    'www.example.org': apex
+});
+host.use([{                                                // support pattern-app mappings as array
+    pattern: /^b(?:bs|oard)\.example\..+$/i,
+    target: forum                                          // support many-to-one mappings
 }, {
     pattern: 'example.com',
     target: apex
@@ -111,38 +111,51 @@ a.use(async (ctx, next) => {
 });
 
 b.use(async (ctx, next) => {
-    ctx.body = 'World';
     await next();
+    ctx.body += ' World';
 });
 
 c.use(async (ctx, next) => {
-    ctx.body = 'to';
+    ctx.set('X-Powered-By', 'vhost');
     await next();
 });
 
 d.use(async (ctx, next) => {
-    ctx.body = 'Koa';
+    ctx.body = 'foobar';
     await next();
+    ctx.set('X-Powered-By', 'Koa');
 });
 
 const host = new Koa();
 
 host.use(vhost({
-    'a.example.com': a,
-    'b.example.com': b
+    'localhost': a,
+    '127.0.0.1': c
 }));
 
+// If duplicated, apps will be called in order
 host.use(vhost([{
-    pattern: 'c.example.com',
-    target: c
+    pattern: 'localhost',
+    target: b
 }, {
-    pattern: /^d.*\.example\.com/,
+    pattern: /^127\.0\.0\.\d+$/,
     target: d
 }]));
 
 host.listen(8000);
 ```
 
+Try to request:
+``` shell
+$ curl http://localhost:8000/
+Hello World
+
+$ curl http://127.0.0.1:8000/
+foobar
+
+$ curl -X HEAD -I http://127.0.0.1:8000/ 2>&1 | grep "X-Powered-By"
+X-Powered-By: Koa
+```
 ## Test
 ``` shell
 $ npm test
