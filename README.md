@@ -34,7 +34,7 @@ host.use(vhost('blog.example.com', blog));                        // support str
 host.use(vhost(/^(?:pro.*|resume)\.example\.com$/i, resume));     // support regexp patterns
 host.use(vhost({                                                  // support pattern-app mappings as object
   'example.org': apex,
-   'forum.example.com': forum
+  'forum.example.com': forum
 }));
 host.use(vhost([{                                                 // support pattern-app mappings as array
   pattern: /^b(?:bs|oard)\.example\..+$/i,
