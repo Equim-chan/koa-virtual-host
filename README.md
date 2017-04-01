@@ -20,6 +20,7 @@ const Koa = require('koa');
 const vhost = require('koa-virtual-host');
 
 // Import the sub Koa apps.
+const api = require('./apps/api');
 const apex = require('./apps/apex');
 const blog = require('./apps/blog');
 const forum = require('./apps/forum');
@@ -29,20 +30,21 @@ const resume = require('./apps/resume');
 const host = new Koa();
 
 // Configure the vhosts.
-host.use('blog.example.com', blog);                        // support string patterns
-host.use(/^(?:pro.*|resume)\.example\.com$/i, resume);      // support regexp patterns
-host.use({                                                 // support pattern-app mappings as object
-    'forum.example.com': forum,
-    'www.example.org': apex
-});
-host.use([{                                                // support pattern-app mappings as array
+host.use(vhost('blog.example.com', blog));                        // support string patterns
+host.use(vhost(/^(?:pro.*|resume)\.example\.com$/i, resume));     // support regexp patterns
+host.use(vhost({                                                  // support pattern-app mappings as object
+    'example.org': apex,
+    'forum.example.com': forum
+}));
+host.use(vhost([{                                                 // support pattern-app mappings as array
     pattern: /^b(?:bs|oard)\.example\..+$/i,
-    target: forum                                          // support many-to-one mappings
+    target: forum                                                 // support many-to-one mappings
 }, {
-    pattern: 'example.com',
-    target: apex
-}]);
+    pattern: 'api.example.com',
+    target: api
+}]));
 
+// Listen and enjoy
 host.listen(80);
 ```
 
@@ -106,24 +108,24 @@ const c = new Koa();
 const d = new Koa();
 
 a.use(async (ctx, next) => {
-    ctx.body = 'Hello';
-    await next();
-});
-
-b.use(async (ctx, next) => {
     await next();
     ctx.body += ' World';
 });
 
-c.use(async (ctx, next) => {
-    ctx.set('X-Powered-By', 'vhost');
+b.use(async (ctx, next) => {
+    ctx.body = 'Hello';
     await next();
+});
+
+c.use(async (ctx, next) => {
+    await next();
+    ctx.set('X-Powered-By', 'Koa');
 });
 
 d.use(async (ctx, next) => {
     ctx.body = 'foobar';
     await next();
-    ctx.set('X-Powered-By', 'Koa');
+    ctx.set('X-Powered-By', 'vhost');
 });
 
 const host = new Koa();
@@ -133,7 +135,8 @@ host.use(vhost({
     '127.0.0.1': c
 }));
 
-// If duplicated, apps will be called in order
+// Additionally, if the pattern is duplicated,
+// the corresponding apps will be called in order
 host.use(vhost([{
     pattern: 'localhost',
     target: b

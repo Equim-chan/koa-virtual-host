@@ -38,6 +38,7 @@ function vhost(pattern, app) {
     return async (ctx, next) => {
         try {
             let target = app;
+
             if (!target) {
                 target = matchAndMap(ctx.hostname);
                 if (!target) {
