@@ -3,6 +3,7 @@
 /**
  * Module dependencies.
  */
+const { domainToUnicode } = require('url');
 const compose = require('koa-compose');
 
 /**
@@ -37,21 +38,18 @@ module.exports = vhost;
 function vhost(pattern, app) {
   return async (ctx, next) => {
     try {
-      let target = app;
+      const hostname = domainToUnicode(ctx.hostname);
 
-      if (!target) {
-        target = matchAndMap(ctx.hostname);
-        if (!target) {
-          return await next();
-        }
-      } else if (!isMatch(pattern, ctx.hostname)) {
-        return await next();
-      }
+      if (app && !isMatch(pattern, hostname)) return await next();
+
+      const target = app || matchAndMap(hostname);
+      if (!target) return await next();
 
       await compose(target.middleware)(ctx, next);
     } catch (err) {
       // the app is specified but malformed
-      ctx.throw(500, err.message);
+      const status = err.status || 500;
+      ctx.throw(status, err.message);
     }
   };
 

@@ -19,30 +19,53 @@ $ npm i --save koa-virtual-host
 const Koa = require('koa');
 const vhost = require('koa-virtual-host');
 
-// Import the sub Koa apps.
+// Import sub Koa apps
 const api = require('./apps/api');
 const apex = require('./apps/apex');
 const blog = require('./apps/blog');
 const forum = require('./apps/forum');
 const resume = require('./apps/resume');
+const unicode = require('./apps/unicode');
 
-// Set up a host.
+// Set up a host
 const host = new Koa();
 
-// Configure the vhosts.
-host.use(vhost('blog.example.com', blog));                        // support string patterns
-host.use(vhost(/^(?:pro.*|resume)\.example\.com$/i, resume));     // support regexp patterns
-host.use(vhost({                                                  // support pattern-app mappings as object
+/**
+ * Configure vhosts
+ */
+
+// Support string patterns
+host.use(vhost('blog.example.com', blog));
+
+// Support regexp patterns
+host.use(vhost(/^(?:pro.*|resume)\.example\.com$/i, resume));
+
+// Support pattern-app mappings as object
+host.use(vhost({
   'example.org': apex,
   'forum.example.com': forum
 }));
-host.use(vhost([{                                                 // support pattern-app mappings as array
+
+// Support pattern-app mappings as array of objects
+host.use(vhost([{
   pattern: /^b(?:bs|oard)\.example\..+$/i,
-  target: forum                                                   // support many-to-one mappings
+  target: forum
 }, {
   pattern: 'api.example.com',
   target: api
 }]));
+
+// Support Unicode hostname
+// Support many-to-one mappings
+host.use(vhost('中文域名.com', unicode));
+host.use(vhost(/(?:萌|moe)/, unicode));
+host.use(vhost(/[\u4E00-\u9FFF]\.io/, unicode));
+
+// Support basic global controls serving as a usual Koa app
+host.use(async (ctx, next) => {
+  ctx.set('Server', 'Koa Virtual Host');
+  await next();
+});
 
 // Listen and enjoy
 host.listen(80);
@@ -156,7 +179,7 @@ Hello World
 $ curl http://127.0.0.1:8000/
 foobar
 
-$ curl -X HEAD -I http://127.0.0.1:8000/ 2>&1 | grep "X-Powered-By"
+$ curl -I http://127.0.0.1:8000/ 2>&1 | grep "X-Powered-By"
 X-Powered-By: Koa
 ```
 ## Test
