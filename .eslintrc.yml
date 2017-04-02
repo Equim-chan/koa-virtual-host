@@ -8,4 +8,16 @@ rules:
   max-len: warn
   newline-per-chained-call: warn
   eqeqeq: error
+  strict:
+    - error
+    - global
+  block-spacing: error
+  no-lonely-if: error
+  object-curly-spacing:
+    - error
+    - always
+  newline-before-return: error
+  operator-linebreak: error
+  arrow-spacing: error
+  no-const-assign: error
   no-invalid-this: off

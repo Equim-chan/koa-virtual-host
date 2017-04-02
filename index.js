@@ -78,6 +78,7 @@ function vhost(pattern, app) {
           return pattern[i].target;
         }
       }
+
       return undefined;
     }
 

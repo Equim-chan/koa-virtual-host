@@ -1,9 +1,9 @@
 # koa-virtual-host
 [![npm version](https://img.shields.io/npm/v/koa-virtual-host.svg?style=flat)](https://www.npmjs.com/package/koa-virtual-host)
+[![node version](https://img.shields.io/node/v/koa-virtual-host.svg?style=flat)](https://www.npmjs.com/package/koa-virtual-host)
 [![Build Status](https://img.shields.io/travis/Equim-chan/koa-virtual-host.svg?style=flat)](https://travis-ci.org/Equim-chan/koa-virtual-host)
 [![Coverage Status](https://img.shields.io/coveralls/Equim-chan/koa-virtual-host.svg?style=flat)](https://coveralls.io/github/Equim-chan/koa-virtual-host?branch=master)
 [![VersionEye](https://img.shields.io/versioneye/d/user/projects/58deaba3d6c98d004405475e.svg)](https://www.versioneye.com/user/projects/58deaba3d6c98d004405475e)
-[![Code Climate](https://img.shields.io/codeclimate/github/Equim-chan/koa-virtual-host/badges/gpa.svg?style=flat)](https://codeclimate.com/github/Equim-chan/koa-virtual-host)
 [![Codacy Badge](https://img.shields.io/codacy/grade/9f4a3b6990134a7b9c5fe099dfb41bcd.svg?style=flat)](https://www.codacy.com/app/Equim-chan/koa-virtual-host)
 [![license](https://img.shields.io/npm/l/koa-virtual-host.svg?style=flat)](https://github.com/Equim-chan/koa-virtual-host/blob/master/LICENSE)
 
