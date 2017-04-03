@@ -39,11 +39,10 @@ function vhost(pattern, app) {
   return async (ctx, next) => {
     try {
       const hostname = domainToUnicode(ctx.hostname);
-
-      if (app && !isMatch(pattern, hostname)) return await next();
-
       const target = app || matchAndMap(hostname);
+
       if (!target) return await next();
+      if (app && !isMatch(pattern, hostname)) return await next();
 
       await compose(target.middleware)(ctx, next);
     } catch (err) {
