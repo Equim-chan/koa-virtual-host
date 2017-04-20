@@ -36,7 +36,7 @@ describe('vhost(pattern, app)', () => {
 
     // We have to listen before the request,
     // supertest(host.listen()) doesn't work here
-    host.listen(2333, 'localhost', function() {
+    host.listen(2333, 'localhost', function () {
       request('http://localhost:2333')
         .get('/')
         .expect(200)
@@ -85,7 +85,7 @@ describe('vhost(pattern, app)', () => {
     host.use(vhost(/localhost/i, a));
     host.use(vhost('localhost', b));
 
-    host.listen(2333, 'localhost', function() {
+    host.listen(2333, 'localhost', function () {
       request('http://localhost:2333')
         .get('/')
         .expect(200)
@@ -119,7 +119,7 @@ describe('vhost(pattern, app)', () => {
     host.use(vhost([], a));
     host.use(vhost('foobar', b));
 
-    host.listen(2333, 'localhost', function() {
+    host.listen(2333, 'localhost', function () {
       request('http://localhost:2333')
         .get('/')
         .expect(404)
@@ -155,7 +155,7 @@ describe('vhost(pattern, app)', () => {
     host.use(vhost(a, 'localhost'));
         // none of above is valid
 
-    host.listen(2333, 'localhost', function() {
+    host.listen(2333, 'localhost', function () {
       request('http://localhost:2333')
         .get('/')
         .expect(500)
@@ -209,7 +209,7 @@ describe('vhost(pattern, app)', () => {
       await next();
     });
 
-    host.listen(2333, 'localhost', function() {
+    host.listen(2333, 'localhost', function () {
       request('http://localhost:2333/test')
         .get('/')
         .expect(200)
@@ -267,7 +267,7 @@ describe('vhost(patterns)', () => {
       target: b,
     }]));
 
-    host.listen(2333, 'localhost', function() {
+    host.listen(2333, 'localhost', function () {
       request('http://localhost:2333')
         .get('/')
         .expect(200)
@@ -321,7 +321,7 @@ describe('vhost(patterns)', () => {
       target: b,
     }]));
 
-    host.listen(2333, 'localhost', function() {
+    host.listen(2333, 'localhost', function () {
       request('http://localhost:2333')
         .get('/')
         .expect(200)
@@ -362,7 +362,7 @@ describe('vhost(patterns)', () => {
     }));
     host.use(vhost([a, b]));
 
-    host.listen(2333, 'localhost', function() {
+    host.listen(2333, 'localhost', function () {
       request('http://localhost:2333')
         .get('/')
         .expect(404)
@@ -405,7 +405,7 @@ describe('vhost(patterns)', () => {
     host.use(vhost([a, a]));
         // none of above is valid
 
-    host.listen(2333, 'localhost', function() {
+    host.listen(2333, 'localhost', function () {
       request('http://localhost:2333')
         .get('/')
         .expect(500)
@@ -464,7 +464,7 @@ describe('vhost(patterns)', () => {
       await next();
     });
 
-    host.listen(2333, 'localhost', function() {
+    host.listen(2333, 'localhost', function () {
       request('http://localhost:2333/test')
         .get('/')
         .expect(200)
@@ -520,7 +520,7 @@ describe('vhost(pattern, app) mixed with vhost(patterns)', () => {
       target: b,
     }]));
 
-    host.listen(2333, 'localhost', function() {
+    host.listen(2333, 'localhost', function () {
       request('http://localhost:2333')
         .get('/')
         .expect(200)
@@ -572,7 +572,7 @@ describe('vhost(pattern, app) mixed with vhost(patterns)', () => {
     }]));
     host.use(vhost(/127\.0\.0\.1/, b));
 
-    host.listen(2333, 'localhost', function() {
+    host.listen(2333, 'localhost', function () {
       request('http://127.0.0.1:2333')
         .get('/')
         .expect(200)
@@ -613,7 +613,7 @@ describe('vhost(pattern, app) mixed with vhost(patterns)', () => {
       target: b,
     }]));
 
-    host.listen(2333, 'localhost', function() {
+    host.listen(2333, 'localhost', function () {
       request('http://localhost:2333')
         .get('/')
         .expect(404)
@@ -659,7 +659,7 @@ describe('vhost(pattern, app) mixed with vhost(patterns)', () => {
     }]));
         // none of above is valid
 
-    host.listen(2333, 'localhost', function() {
+    host.listen(2333, 'localhost', function () {
       request('http://localhost:2333')
         .get('/')
         .expect(500)
@@ -715,7 +715,7 @@ describe('vhost(pattern, app) mixed with vhost(patterns)', () => {
       await next();
     });
 
-    host.listen(2333, 'localhost', function() {
+    host.listen(2333, 'localhost', function () {
       request('http://localhost:2333/test')
         .get('/')
         .expect(200)

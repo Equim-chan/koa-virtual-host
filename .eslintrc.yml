@@ -5,19 +5,37 @@ rules:
   indent:
     - error
     - 2
-  max-len: warn
+  max-len:
+    - warn
+    - 100
   newline-per-chained-call: warn
   eqeqeq: error
   strict:
     - error
     - global
-  block-spacing: error
+  block-spacing:
+    - error
+    - always
   no-lonely-if: error
   object-curly-spacing:
     - error
     - always
   newline-before-return: error
-  operator-linebreak: error
+  operator-linebreak:
+    - error
+    - after
   arrow-spacing: error
+  arrow-parens: off
+  one-var: off
+  space-before-function-paren:
+    - error
+    - anonymous: always
+      named: never
+      asyncArrow: always
+  no-unneeded-ternary: error
+  no-param-reassign: error
   no-const-assign: error
   no-invalid-this: off
+  eol-last:
+    - error
+    - always
