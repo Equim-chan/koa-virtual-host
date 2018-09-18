@@ -38,7 +38,7 @@ module.exports = vhost;
 function vhost(pattern, app) {
   return async (ctx, next) => {
     try {
-      const hostname = domainToUnicode(ctx.hostname);
+      const hostname = domainToUnicode(ctx.get(':authority') || ctx.hostname);
       const target = app || matchAndMap(hostname);
 
       if (!target) return await next();
